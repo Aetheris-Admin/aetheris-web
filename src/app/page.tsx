@@ -34,10 +34,14 @@ export default function Home() {
 
   const handleGenerateStrategy = async () => {
     if (!description.trim()) return;
-    
+
+    const strategyWebhookUrl =
+      process.env.NEXT_PUBLIC_STRATEGYZER_WEBHOOK_URL ??
+      "https://aetheris.app.n8n.cloud/webhook/venture-strategyzer";
+
     setIsLoading(true);
     try {
-      const response = await fetch("https://aetheris.app.n8n.cloud/webhook/venture-strategyzer", {
+      const response = await fetch(strategyWebhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ venture_description: description }),
@@ -55,12 +59,16 @@ export default function Home() {
   };
 
   const handleGenerateAvatar = async () => {
+    const avatarWebhookUrl =
+      process.env.NEXT_PUBLIC_AVATAR_WEBHOOK_URL ??
+      "https://aetheris.app.n8n.cloud/webhook/generate-avatar";
+
     setIsGeneratingAvatar(true);
     setAvatarError(null);
     setAvatarData(null);
 
     try {
-      const response = await fetch("https://aetheris.app.n8n.cloud/webhook/generate-avatar", {
+      const response = await fetch(avatarWebhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ executive: selectedExec }),
